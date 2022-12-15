@@ -62,3 +62,9 @@ class Postagem(models.Model):
 class CarrinhoCompras(models.Model):
     produto = models.ForeignKey
     total_pedido = models.DecimalField
+
+class Cadastro_Cliente(models.Model):
+    nome = models.CharField(max_length=150)
+    email = models.EmailField()
+    cpf = models.CharField(max_length=100)
+    senha = models.IntegerField()

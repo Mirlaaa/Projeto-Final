@@ -7,3 +7,5 @@ admin.site.register(Treinador)
 admin.site.register(Plano)
 admin.site.register(Servico)
 admin.site.register(Postagem)
+admin.site.register(Cadastro_Cliente)
+
