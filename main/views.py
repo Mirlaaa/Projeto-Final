@@ -2,40 +2,21 @@ from django.shortcuts import render, redirect
 from .forms import CadastroClienteForm
 from django.contrib import auth, messages
 from django.contrib.auth.models import User
-
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def redirect_index(request):
     return redirect('index')
 
+@login_required
 def index(request):
     if request.user.is_authenticated:
         print("autenticado")
     return render(request, "index.html")
 
 def conta(request):
-    
     return render(request,'cadastro.html')
 
-def login(request):
-    print(request.method)
-
-    if request.method == 'POST':
-        email = request.POST['email']
-        senha = request.POST['senha']        
-
-        if User.objects.filter(email=email).exists():
-            nome_usuario = User.objects.filter(email=email).values_list('username', flat=True).get()
-        print(nome_usuario)
-        user = auth.authenticate(request, username=nome_usuario, password=senha)
-
-        if user is not None:
-            auth.login(request, user)
-            print('LOGADO!')
-            return redirect ('index')
-        print(str(request.user))
-        print(email, senha)
-    return render(request,'cadastro.html',context={'auth': 'sign-in'})
-    
 def cadastro(request):
     print(request.method)
     if request.method == 'POST':
@@ -56,5 +37,29 @@ def cadastro(request):
     else:
         return render(request,'cadastro.html',context={'auth': 'sign-up'})
     
+def login(request):
+    print(request.method)
+
+    if request.method == 'POST':
+        email = request.POST['email']
+        senha = request.POST['senha']        
+
+        if User.objects.filter(email=email).exists():
+            nome_usuario = User.objects.filter(email=email).values_list('username', flat=True).get()
+        print(nome_usuario)
+        user = auth.authenticate(request, username=nome_usuario, password=senha)
+
+        if user is not None:
+            auth.login(request, user)
+            print('LOGADO!')
+            return redirect ('index')
+        print(str(request.user))
+        print(email, senha)
+    return render(request,'cadastro.html',context={'auth': 'sign-in'})
+    
+def logout_app(request):
+    logout(request)
+    return redirect('login')
+
 def campo_vazio(campo):
   return not campo.strip()
