@@ -34,8 +34,11 @@
         <a href="#trainers">Treinadores</a>
         <a href="#blogs">Postagens</a>
         <a href="#produtos">Produtos</a>
-        <a href="{% url 'cadastro' %}" class="btn"> Entrar/Cadastrar </a>
+        {% if request.user.is_authenticated %}
         <a href="{% url 'logout' %}">Deslogar</a>
+        {% else %}
+        <a href="{% url 'cadastro' %}" class="btn"> Entrar/Cadastrar </a>
+        {% endif %}
       </nav>
     </header>
 

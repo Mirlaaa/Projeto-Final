@@ -53,7 +53,7 @@
           </div>
           <div class="input-field">
             <i class="fas fa-envelope"></i>
-            <input name="email" id="email" type="text" placeholder="E-mail" required />
+            <input name="email" id="email" type="email" placeholder="E-mail" required />
           </div>
           <div class="input-field">
             <i class="fa fa-file"></i>
@@ -90,35 +90,9 @@
         </div>
       </div>
     </div>
-    <!-- <script src="{% static 'assets/js/app.js' %}"></script> -->
 
-    <script>
-      var alerta = document.getElementById("alert").innerHTML;
-      if (alerta != null) alert(alerta);
-
-      function teste(auth) {
-        const sign_in_btn = document.querySelector("#sign-in-btn");
-        const sign_up_btn = document.querySelector("#sign-up-btn");
-        const container = document.querySelector(".container");
-
-        if (auth === "sign-in") {
-          container.classList.remove("sign-up-mode");
-        } else {
-          container.classList.add("sign-up-mode");
-        }
-      }
-
-      function loginFunc() {
-        console.log("entrei no login");
-        var wind = "http://localhost:8000/accounts/login";
-        window.open(wind, "_parent");
-      }
-
-      function cadastroFunc() {
-        console.log("entrei no cadastro");
-        var wind = "http://localhost:8000/accounts/cadastro";
-        window.open(wind, "_parent");
-      }
-    </script>
+    <script type="text/javascript" src="{% static 'assets/js/jquery-1.2.6.pack.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/jquery.maskedinput-1.1.4.pack.js' %}"></script>
+    <script src="{% static 'assets/js/app.js' %}"></script>
   </body>
 </html>

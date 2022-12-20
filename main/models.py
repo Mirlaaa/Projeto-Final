@@ -1,13 +1,20 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+# from django.utils.translation import ugettext_lazy as _
 
-class Cliente(models.Model):
-    nome_cliente = models.CharField(max_length=150)
-    email_cliente = models.EmailField()
-    senha_cliente = models.IntegerField()
-    #pesquisar como armazenar senha do cliente no banco de forma criptografada
+from .managers import CustomUserManager
+
+class Cliente(AbstractUser):
+    email = models.EmailField(('email address'), unique=True)
+    cpf = models.CharField(max_length=11, unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
 
     def __str__(self):
-        return self.nome_cliente + ' (' + self.email_cliente + ')'
+        return self.email
 
 class Produto(models.Model):
     nome_produto = models.CharField(max_length=150)
@@ -30,6 +37,7 @@ class Servico(models.Model):
         verbose_name_plural = 'Serviços'
 
 class Treinador(models.Model):
+    user = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     nome_treinador = models.CharField(max_length=150)
     email_treinador = models.EmailField()
     telefone_treinador = models.CharField(max_length=100)
@@ -63,8 +71,4 @@ class CarrinhoCompras(models.Model):
     produto = models.ForeignKey
     total_pedido = models.DecimalField
 
-class Cadastro_Cliente(models.Model):
-    nome = models.CharField(max_length=150)
-    email = models.EmailField()
-    cpf = models.CharField(max_length=100)
-    senha = models.IntegerField()
+

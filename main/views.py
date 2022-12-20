@@ -1,17 +1,17 @@
 from django.shortcuts import render, redirect
-from .forms import CadastroClienteForm
 from django.contrib import auth, messages
-from django.contrib.auth.models import User
+from .models import Cliente
+from befit import settings
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+
+
 # Create your views here.
 def redirect_index(request):
     return redirect('index')
 
 @login_required
 def index(request):
-    if request.user.is_authenticated:
-        print("autenticado")
     return render(request, "index.html")
 
 def conta(request):
@@ -25,15 +25,14 @@ def cadastro(request):
         cpf = request.POST['cpf']
         senha = request.POST['senha']
 
-        if User.objects.filter(email=email).exists():
+        if Cliente.objects.filter(email=email).exists():
             messages.error(request, 'Já existe uma conta com esse e-mail, por favor informe outro email!')
             return redirect('cadastro')
-            
-        user = User.objects.create_user(username=nome_completo,email=email,password=senha)
-        user.save()
-        messages.success(request, 'Usuário cadastrado!')
-        print(user)   
-        return redirect ('login')
+        else:    
+            user = Cliente.objects.create_user(username=nome_completo,email=email,cpf=cpf,password=senha)
+            user.save()
+            messages.success(request, 'Usuário cadastrado!')
+            return redirect ('login')
     else:
         return render(request,'cadastro.html',context={'auth': 'sign-up'})
     
@@ -44,17 +43,14 @@ def login(request):
         email = request.POST['email']
         senha = request.POST['senha']        
 
-        if User.objects.filter(email=email).exists():
-            nome_usuario = User.objects.filter(email=email).values_list('username', flat=True).get()
-        print(nome_usuario)
-        user = auth.authenticate(request, username=nome_usuario, password=senha)
+        if Cliente.objects.filter(email=email).exists():
+            user = auth.authenticate(request, email=email, password=senha)
 
-        if user is not None:
-            auth.login(request, user)
-            print('LOGADO!')
-            return redirect ('index')
-        print(str(request.user))
-        print(email, senha)
+            if user is not None:
+                auth.login(request, user)
+                return redirect (settings.LOGIN_REDIRECT_URL)
+            else:
+                messages.error(request,'E-mail e/ou senha incorretos!')
     return render(request,'cadastro.html',context={'auth': 'sign-in'})
     
 def logout_app(request):
@@ -63,3 +59,4 @@ def logout_app(request):
 
 def campo_vazio(campo):
   return not campo.strip()
+
