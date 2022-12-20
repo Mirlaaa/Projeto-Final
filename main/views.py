@@ -51,6 +51,9 @@ def login(request):
                 return redirect (settings.LOGIN_REDIRECT_URL)
             else:
                 messages.error(request,'E-mail e/ou senha incorretos!')
+        else:
+           messages.error(request,'E-mail e/ou senha incorretos!')
+
     return render(request,'cadastro.html',context={'auth': 'sign-in'})
     
 def logout_app(request):
