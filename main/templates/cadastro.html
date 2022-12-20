@@ -1,78 +1,98 @@
 {% load static %}
-{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'assets/css/style-cadastro.css' %}" />
+    <title>Login e Cadastro</title>
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <link rel="stylesheet" href="{% static 'assets/css/style-cadastro.css' %}">   
-     <title>Login e Cadastro</title>
-</head>
-
-<body>
-    <div class="container">
-        <div class="signin-signup">
-            <form action="" class="sign-in-form">
-                <h2 class="title"> Bem-vindo de volta! </h2>
-                <p class="lara"> Para manter-se conectado conosco faça o login com suas informações pessoais.</p>
-                <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Email">
-                </div>
-                <div class="input-field">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Senha">
-                </div>
-                <a class="password" href="#">Esqueceu sua senha?</a>
-                <input type="submit" value="Entrar" class="btn">
-                <p class="account-text">Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a></p>
-            </form>
-            <form action="" class="sign-up-form">
-                <h2 class="title"> Cadastre-se </h2>
-                <p class="lara"> Insira seus dados e comece a jornada conosco! </p>
-                <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Nome">
-                </div>
-                <div class="input-field">
-                    <i class="fas fa-envelope"></i>
-                    <input type="text" placeholder="E-mail">
-                </div>
-                <div class="input-field">
-                    <i class="fa fa-file"></i>
-                    <input type="text" placeholder="CPF">
-                </div>
-                <div class="input-field">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Senha">
-                </div>
-                <input type="submit" value="Cadastrar" class="btn">
-                <p class="account-text">Already have an account? <a href="#" id="sign-in-btn2">Sign in</a></p>
-            </form>
-        </div>
-        <div class="panels-container">
-            <div class="panel left-panel">
-                <div class="content">
-                    <img src="{% static 'assets/img/logo.png' %}" alt="">
-                    <h4>Já possui uma conta?</h4>
-                    <button class="btn" id="sign-in-btn">Entrar</button>
-                </div>
-            </div>
-            <div class="panel right-panel">
-                <div class="content">
-                    <img src="{% static 'assets/img/logo.png' %}" alt="">
-                    <p class="giovana"> Bem-vindo a befit, um site de vendas de artigos fitness e 
-                    gerenciamento de academia!</p>
-                    <button class="btn" id="sign-up-btn">Cadastro</button>
-                </div>
-                {% comment %} <img src="img/logo-white.png" alt="" class="image"> {% endcomment %}
-            </div>
-        </div>
+  <body onload="teste('{{auth}}')">
+    <div id="alerta">
+      {% if messages %} {% for message in messages %}
+      <div id="alert" class="alert" role="alert" value="{{ message }}">{{ message }}</div>
+      {% endfor %} {% endif %}
     </div>
-    <script src="{% static 'assets/js/app.js' %}"> </script>
-</body>
 
+    <div class="container">
+      <div class="signin-signup">
+        <form action="{% url 'login' %}" method="post" class="sign-in-form">
+          {% csrf_token %}
+          <h2 class="title">Bem-vindo de volta!</h2>
+          <p class="lara">Para manter-se conectado conosco faça o login com suas informações pessoais.</p>
+          <div class="input-field">
+            <i class="fas fa-user"></i>
+            <input name="email" type="email" placeholder="Email" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input name="senha" type="password" placeholder="Senha" required />
+          </div>
+          <a class="password" href="#"> Esqueceu sua senha? </a>
+          <input type="submit" value="Entrar" class="btn" />
+          <p class="account-text">
+            Don't have an account?
+            <a href="#" id="sign-up-btn2"> Sign up </a>
+          </p>
+        </form>
+        <form action="{% url 'cadastro' %}" method="post" class="sign-up-form">
+          {% csrf_token %}
+          <h2 class="title">Cadastre-se</h2>
+          <p class="lara">Insira seus dados e comece a jornada conosco!</p>
+          <div class="input-field">
+            <i class="fas fa-user"></i>
+            <input name="nome_completo" id="nome_completo" type="text" placeholder="Nome" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-envelope"></i>
+            <input name="email" id="email" type="email" placeholder="E-mail" required />
+          </div>
+          <div class="input-field">
+            <i class="fa fa-file"></i>
+            <input name="cpf" id="cpf" type="text" placeholder="CPF" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input name="senha" type="password" placeholder="Senha" required />
+          </div>
+          <input type="submit" value="Cadastrar" class="btn" />
+          <p class="account-text">
+            Already have an account?
+            <a href="#" id="sign-in-btn2"> Sign in </a>
+          </p>
+        </form>
+      </div>
+      <div class="panels-container">
+        <div class="panel left-panel">
+          <div class="content">
+            <img src="{% static 'assets/img/logo.png' %}" alt="" />
+            <h4>Já possui uma conta?</h4>
+            <button onclick="loginFunc()" class="btn" id="sign-in-btn">Entrar</button>
+          </div>
+        </div>
+        <div class="panel right-panel">
+          <div class="content">
+            <img src="{% static 'assets/img/logo.png' %}" alt="" />
+            <p class="giovana">Bem-vindo a befit, um site de vendas de artigos fitness e gerenciamento de academia!</p>
+            <button onclick="cadastroFunc()" class="btn" id="sign-up-btn">Cadastro</button>
+          </div>
+          {% comment %}
+          <img src="img/logo-white.png" alt="" class="image" />
+          {% endcomment %}
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'assets/js/jquery-1.2.6.pack.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/jquery.maskedinput-1.1.4.pack.js' %}"></script>
+    <script src="{% static 'assets/js/app.js' %}"></script>
+  </body>
 </html>
