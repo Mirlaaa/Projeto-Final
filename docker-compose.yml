@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  django:
+    build: ./
+    command: gunicorn befit.wsgi:application --bind 0.0.0.0:8000
+    #command: python manage.py runserver 0.0.0.0:8000
+    ports: 
+      - 8000:8000
+    volumes:
+      - db_django:/home/app
+      - .:/home/app
+  nginx:
+    build: ./nginx/
+    ports: 
+      - 80:80
+    volumes:
+      - db_django:/home/app
+volumes:
+  db_django:
