@@ -18,7 +18,6 @@ def conta(request):
     return render(request,'cadastro.html')
 
 def cadastro(request):
-    print(request.method)
     if request.method == 'POST':
         nome_completo = request.POST['nome_completo']
         email = request.POST['email']
