@@ -4,16 +4,19 @@ services:
     build: ./
     command: gunicorn befit.wsgi:application --bind 0.0.0.0:8000
     #command: python manage.py runserver 0.0.0.0:8000
-    ports: 
-      - 8000:8000
+    ports:
+      - 8013:8000
     volumes:
-      - db_django:/home/app
-      - .:/home/app
+      - banco_volume_grupo6:/home/app/banco
+      - static_volume_grupo6:/home/app/staticfiles
+    env_file:
+      - ./.env
   nginx:
     build: ./nginx/
-    ports: 
-      - 80:80
+    ports:
+      - 94:94
     volumes:
-      - db_django:/home/app
+      - static_volume_grupo6:/home/app/staticfiles
 volumes:
-  db_django:
+  banco_volume_grupo6:
+  static_volume_grupo6:

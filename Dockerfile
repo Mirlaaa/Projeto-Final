@@ -26,5 +26,5 @@ RUN chmod +x ./entrypoint.sh
 
 #CMD [ "python", "manage.py", "collectstatic", "--no-input" ]
 #CMD [ "python", "manage.py", "flush", "--no-input" ]
-CMD ["sh", "entrypoint.sh"]
+ENTRYPOINT [ "./entrypoint.sh" ]
 
