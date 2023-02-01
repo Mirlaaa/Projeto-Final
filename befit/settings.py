@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://grupo6vesp.kaiohfd.com.br']
 
 CSRF_TRUSTED_ORIGINS = ['https://grupo6vesp.kaiohfd.com.br']
 

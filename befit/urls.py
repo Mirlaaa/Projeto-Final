@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path,include, url
 from main.views import *
 from django.conf import settings
 from django.conf.urls.static import static
@@ -9,12 +9,7 @@ from befit import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', redirect_index),
-    path('principal/',index, name='index'),
-    path('accounts/',conta, name='conta'),
-    path('accounts/login/',login, name='login'),
-    path('accounts/cadastro',cadastro, name='cadastro'),
-    path('logout',logout_app, name='logout'),  
+    url(r'^',include('main.urls'))
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
